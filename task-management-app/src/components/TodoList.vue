@@ -4,7 +4,10 @@
       {{name}}
     </div>
     <div class="todos">
-      <Container @drop="onDrop(items, $event)">
+      <Container
+        @drop="onDrop(items, $event)"
+        :should-accept-drop="() => true"
+        :get-child-payload="getChildPayload">
       <Draggable v-for="(item, index) in items" :key="`todo-${index}`">
         <div class="todo-item">
             {{item}} <a @click="deleteItem(index)" class="delete-todo-link">[Delete]</a>
@@ -42,11 +45,14 @@ export default {
       this.items.push(this.newItem);
       this.newItem = '';
     },
+    getChildPayload(index) {
+      return this.items[index];
+    },
     onDrop(source, dropResult) {
-      const { removedIndex, addedIndex } = dropResult;
+      const { removedIndex, addedIndex, payload } = dropResult;
 
-      if (removedIndex !== null && addedIndex !== null) {
-        const itemToAdd = source.splice(removedIndex, 1)[0];
+      const itemToAdd = removedIndex !== null ? source.splice(removedIndex, 1)[0] : payload;
+      if (addedIndex !== null) {
         source.splice(addedIndex, 0, itemToAdd);
       }
     },
