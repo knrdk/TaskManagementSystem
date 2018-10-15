@@ -1,66 +1,38 @@
 <template>
-  <div class="status-board">
-    <div class="todos">
-      <Container @drop="onDrop(items, $event)">
-      <Draggable v-for="(item, index) in items" :key="`todo-${index}`">
-        <div class="todo-item">
-            {{item}} <a @click="deleteItem(index)" class="delete-todo-link">[Delete]</a>
-        </div>
-      </Draggable>
-      </Container>
-    </div>
-    <div class="footer">
-      <div class="new-todo">
-          <input v-model="newItem"/>
-          <button @click="addItem()" :disabled="!newItem">Add</button>
-      </div>
-    </div>
+<div class="status-board">
+  <div><h2>Lista tasków</h2></div>
+  <TodoList v-for="(name, index) in listNames" :key="index" :name="name"/>
+  <div class="new-list">
+    <input v-model="newItem"/>
+    <button @click="addItem()" :disabled="!newItem">Add new list</button>
+  </div>
   </div>
 </template>
 
 <script>
-import { Container, Draggable } from 'vue-smooth-dnd';
+import TodoList from './TodoList.vue';
 
-export default {
-  components: { Container, Draggable },
+const newListDefaultName = 'New list';
+
+export default{
+  components: { TodoList },
   data() {
     return {
-      items: ['First item', 'Second item', 'Third item'],
-      newItem: '',
+      listNames: ['ToDo', 'In Progress', 'Done'],
+      newItem: newListDefaultName,
     };
   },
   methods: {
-    deleteItem(index) {
-      this.items.splice(index, 1);
-    },
     addItem() {
-      this.items.push(this.newItem);
-      this.newItem = '';
-    },
-    onDrop(source, dropResult) {
-      const { removedIndex, addedIndex } = dropResult;
-
-      if (removedIndex !== null && addedIndex !== null) {
-        const itemToAdd = source.splice(removedIndex, 1)[0];
-        source.splice(addedIndex, 0, itemToAdd);
-      }
+      this.listNames.push(this.newItem);
+      this.newItem = newListDefaultName;
     },
   },
 };
 </script>
 
 <style scoped>
-.delete-todo-link {
-  color: red;
-}
-.todo-item {
-  border-style: solid;
-  border-width: 1px;
-  margin: 5px;
-  padding: 5px;
-}
-.status-board {
-  width: 250px;
-  background-color: aliceblue;
+.new-list{
+  float:left;
 }
 </style>
