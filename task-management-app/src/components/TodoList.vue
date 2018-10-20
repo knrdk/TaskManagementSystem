@@ -1,12 +1,10 @@
 <template>
  <div class="todo-list">
     <div class="header">
-      {{name}}
-    </div>
-    <div class="footer">
+      <span class="todo-list-name">{{name}}</span>
       <div class="new-todo">
-          <input v-model="newItem"/>
-          <button @click="addItem()" :disabled="!newItem">Add</button>
+        <input v-model="newItem"/>
+        <button @click="addItem()" :disabled="!newItem">Add</button>
       </div>
     </div>
     <div class="todos">
@@ -77,5 +75,12 @@ export default {
 .todo-list {
   width: 250px;
   background-color: aliceblue;
+}
+.header {
+  padding: 5px;
+}
+.header .todo-list-name {
+  font-size: 14pt;
+  font-weight: bold;
 }
 </style>
