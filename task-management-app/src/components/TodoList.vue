@@ -3,6 +3,12 @@
     <div class="header">
       {{name}}
     </div>
+    <div class="footer">
+      <div class="new-todo">
+          <input v-model="newItem"/>
+          <button @click="addItem()" :disabled="!newItem">Add</button>
+      </div>
+    </div>
     <div class="todos">
       <Container
         @drop="onDrop(items, $event)"
@@ -14,12 +20,6 @@
         </div>
       </Draggable>
       </Container>
-    </div>
-    <div class="footer">
-      <div class="new-todo">
-          <input v-model="newItem"/>
-          <button @click="addItem()" :disabled="!newItem">Add</button>
-      </div>
     </div>
   </div>
 </template>
