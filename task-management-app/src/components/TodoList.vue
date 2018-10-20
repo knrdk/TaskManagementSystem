@@ -3,8 +3,8 @@
     <div class="header">
       <span class="todo-list-name">{{name}}</span>
       <div class="new-todo">
-        <input v-model="newItem"/>
-        <button @click="addItem()" :disabled="!newItem">Add</button>
+        <input v-model="newItem.name"/>
+        <button @click="addItem()" :disabled="!newItem.name">Add</button>
       </div>
     </div>
     <div class="todos">
@@ -13,26 +13,34 @@
         :should-accept-drop="() => true"
         :get-child-payload="getChildPayload">
       <Draggable v-for="(item, index) in items" :key="`todo-${index}`">
-        <div class="todo-item">
-            {{item}} <a @click="deleteItem(index)" class="delete-todo-link">[Delete]</a>
+        <div class="todo-item" @click="selectItem(index)">
+            {{item.name}} <a @click.stop="deleteItem(index)" class="delete-todo-link">[Delete]</a>
         </div>
       </Draggable>
       </Container>
     </div>
+    <TodoDetails ref="details"></TodoDetails>
   </div>
 </template>
 
 <script>
 import { Container, Draggable } from 'vue-smooth-dnd';
+import TodoDetails from './TodoDetails.vue';
+
+function createEmptyTodoItem() {
+  return {
+    name: '',
+  };
+}
 
 export default {
-  components: { Container, Draggable },
+  components: { Container, Draggable, TodoDetails },
   props: ['name'],
   data() {
     return {
       listName: 'To Do',
-      items: ['First item', 'Second item', 'Third item'],
-      newItem: '',
+      items: [{ name: 'First item' }, { name: 'Second item' }, { name: 'Third item' }],
+      newItem: createEmptyTodoItem(),
     };
   },
   methods: {
@@ -41,7 +49,11 @@ export default {
     },
     addItem() {
       this.items.push(this.newItem);
-      this.newItem = '';
+      this.newItem = createEmptyTodoItem();
+    },
+    selectItem(index) {
+      const selectedItem = this.items[index];
+      this.$refs.details.open(selectedItem);
     },
     getChildPayload(index) {
       return this.items[index];
