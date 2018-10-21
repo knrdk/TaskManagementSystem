@@ -25,11 +25,13 @@
 
 <script>
 import { Container, Draggable } from 'vue-smooth-dnd';
+import Uuid from 'uuid/v4';
 import TodoDetails from './TodoDetails.vue';
 
 function createEmptyTodoItem() {
   return {
     name: '',
+    id: Uuid(),
   };
 }
 
@@ -39,7 +41,11 @@ export default {
   data() {
     return {
       listName: 'To Do',
-      items: [{ name: 'First item' }, { name: 'Second item' }, { name: 'Third item' }],
+      items: [
+        { id: Uuid(), name: 'First item' },
+        { id: Uuid(), name: 'Second item' },
+        { id: Uuid(), name: 'Third item' },
+      ],
       newItem: createEmptyTodoItem(),
     };
   },
