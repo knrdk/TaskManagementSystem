@@ -3,7 +3,7 @@
     ref="modal"
     @close="onClose()"
     title="Task details">
-    <div>Id: {{ item }}</div>
+    <div>Name: {{ item.name }}, Id: {{ item.id }}</div>
   </sweet-modal>
 </template>
 
@@ -12,12 +12,13 @@ import { SweetModal } from 'sweet-modal-vue';
 
 export default {
   components: { SweetModal },
-  data() {
-    return {
-      item: this.todoId,
-    };
-  },
   props: ['todoId'],
+  computed: {
+    item() {
+      const requestedId = this.todoId;
+      return this.$store.getters.getTodoById(requestedId);
+    },
+  },
   methods: {
     open() {
       this.$refs.modal.open();

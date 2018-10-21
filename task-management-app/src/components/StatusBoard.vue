@@ -1,7 +1,7 @@
 <template>
 <div class="status-board">
   <div><h2>Lista tasków</h2></div>
-  <TodoList v-for="(name, index) in listNames" :key="index" :name="name"/>
+  <TodoList v-for="(list, index) in lists" :key="index" :name="list.name" :id="list.id" />
   <div class="new-list">
     <input v-model="newItem"/>
     <button @click="addItem()" :disabled="!newItem">Add new list</button>
@@ -19,13 +19,17 @@ export default{
   components: { TodoList },
   data() {
     return {
-      listNames: ['ToDo', 'In Progress', 'Done'],
       newItem: newListDefaultName,
     };
   },
+  computed: {
+    lists() {
+      return this.$store.state.lists;
+    },
+  },
   methods: {
     addItem() {
-      this.listNames.push(this.newItem);
+      this.$store.commit('addNewList', this.newItem);
       this.newItem = newListDefaultName;
     },
   },

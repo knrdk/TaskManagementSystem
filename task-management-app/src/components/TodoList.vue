@@ -3,8 +3,8 @@
     <div class="header">
       <span class="todo-list-name">{{name}}</span>
       <div class="new-todo">
-        <input v-model="newItem.name"/>
-        <button @click="addItem()" :disabled="!newItem.name">Add</button>
+        <input v-model="newItem"/>
+        <button @click="addItem()" :disabled="!newItem">Add</button>
       </div>
     </div>
     <div class="todos">
@@ -12,9 +12,9 @@
         @drop="onDrop(items, $event)"
         :should-accept-drop="() => true"
         :get-child-payload="getChildPayload">
-      <Draggable v-for="(item, index) in items" :key="`todo-${index}`">
-        <div class="todo-item" @click="selectItem(index)">
-            {{item.name}} <a @click.stop="deleteItem(index)" class="delete-todo-link">[Delete]</a>
+      <Draggable v-for="item in items" :key="item.id">
+        <div class="todo-item" @click="selectItem(item.id)">
+            {{item.name}} <a @click.stop="deleteItem(item.id)" class="delete-todo-link">[Delete]</a>
         </div>
       </Draggable>
       </Container>
@@ -24,43 +24,41 @@
 
 <script>
 import { Container, Draggable } from 'vue-smooth-dnd';
-import Uuid from 'uuid/v4';
-
-function createEmptyTodoItem() {
-  return {
-    name: '',
-    id: Uuid(),
-  };
-}
 
 export default {
   components: { Container, Draggable },
-  props: ['name'],
+  props: ['id', 'name'],
   data() {
     return {
-      listName: 'To Do',
-      items: [
-        { id: Uuid(), name: 'First item' },
-        { id: Uuid(), name: 'Second item' },
-        { id: Uuid(), name: 'Third item' },
-      ],
-      newItem: createEmptyTodoItem(),
+      newItem: '',
     };
   },
+  computed: {
+    items() {
+      return this.$store.getters.getTodosForList(this.id);
+    },
+  },
   methods: {
-    deleteItem(index) {
-      this.items.splice(index, 1);
+    deleteItem(todoId) {
+      const params = {
+        listId: this.id,
+        todoId,
+      };
+      this.$store.commit('deleteTodo', params);
     },
     addItem() {
-      this.items.push(this.newItem);
-      this.newItem = createEmptyTodoItem();
+      const params = {
+        listId: this.id,
+        todoName: this.newItem,
+      };
+      this.$store.commit('addTodo', params);
+      this.newItem = '';
     },
-    selectItem(index) {
-      const selectedItem = this.items[index];
+    selectItem(todoId) {
       this.$router.push({
         name: 'todoDetails',
         params: {
-          todoId: selectedItem.id,
+          todoId,
         },
       });
     },
@@ -68,6 +66,7 @@ export default {
       return this.items[index];
     },
     onDrop(source, dropResult) {
+      // TODO indirect store modification
       const { removedIndex, addedIndex, payload } = dropResult;
 
       const itemToAdd = removedIndex !== null ? source.splice(removedIndex, 1)[0] : payload;
