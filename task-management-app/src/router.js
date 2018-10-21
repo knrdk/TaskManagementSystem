@@ -25,6 +25,7 @@ export default new Router({
           path: '/statusBoard/:todoId',
           name: 'todoDetails',
           component: () => import(/* webpackChunkName: "about" */ './components/TodoDetails.vue'),
+          props: true,
         },
       ],
     },

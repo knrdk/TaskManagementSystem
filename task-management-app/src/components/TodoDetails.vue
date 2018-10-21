@@ -14,9 +14,10 @@ export default {
   components: { SweetModal },
   data() {
     return {
-      item: this.$route.params.todoId,
+      item: this.todoId,
     };
   },
+  props: ['todoId'],
   methods: {
     open() {
       this.$refs.modal.open();
