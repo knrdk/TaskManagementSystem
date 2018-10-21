@@ -1,11 +1,10 @@
 <template>
-<div>
-    <sweet-modal ref="modal" title="Task details">
-      <div v-if="item!=null">
-        Name: {{item.name}}
-      </div>
-    </sweet-modal>
-</div>
+  <sweet-modal
+    ref="modal"
+    @close="onClose()"
+    title="Task details">
+    <div>Id: {{ item }}</div>
+  </sweet-modal>
 </template>
 
 <script>
@@ -15,14 +14,19 @@ export default {
   components: { SweetModal },
   data() {
     return {
-      item: null,
+      item: this.$route.params.todoId,
     };
   },
   methods: {
-    open(selectedItem) {
-      this.item = selectedItem;
+    open() {
       this.$refs.modal.open();
     },
+    onClose() {
+      this.$router.push('/statusBoard');
+    },
+  },
+  mounted() {
+    this.open();
   },
 };
 </script>

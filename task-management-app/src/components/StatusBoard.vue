@@ -6,6 +6,7 @@
     <input v-model="newItem"/>
     <button @click="addItem()" :disabled="!newItem">Add new list</button>
   </div>
+  <router-view></router-view>
   </div>
 </template>
 

@@ -19,14 +19,12 @@
       </Draggable>
       </Container>
     </div>
-    <TodoDetails ref="details"></TodoDetails>
   </div>
 </template>
 
 <script>
 import { Container, Draggable } from 'vue-smooth-dnd';
 import Uuid from 'uuid/v4';
-import TodoDetails from './TodoDetails.vue';
 
 function createEmptyTodoItem() {
   return {
@@ -36,7 +34,7 @@ function createEmptyTodoItem() {
 }
 
 export default {
-  components: { Container, Draggable, TodoDetails },
+  components: { Container, Draggable },
   props: ['name'],
   data() {
     return {
@@ -59,7 +57,12 @@ export default {
     },
     selectItem(index) {
       const selectedItem = this.items[index];
-      this.$refs.details.open(selectedItem);
+      this.$router.push({
+        name: 'todoDetails',
+        params: {
+          todoId: selectedItem.id,
+        },
+      });
     },
     getChildPayload(index) {
       return this.items[index];
