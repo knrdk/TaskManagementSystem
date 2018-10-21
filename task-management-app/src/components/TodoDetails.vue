@@ -29,6 +29,9 @@ export default {
   mounted() {
     this.open();
   },
+  beforeRouteLeave(to, from, next) {
+    setTimeout(() => next(), 100);
+  },
 };
 </script>
 
