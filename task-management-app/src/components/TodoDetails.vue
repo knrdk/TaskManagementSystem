@@ -2,21 +2,33 @@
   <sweet-modal
     ref="modal"
     @close="onClose()"
-    title="Task details">
-    <div>Name: {{ item.name }}, Id: {{ item.id }}</div>
+    :title="item.name">
+    <div>
+      <table>
+        <tr>
+          <td>Name</td>
+          <td>{{ item.name }}</td>
+        </tr>
+        <tr>
+          <td>Id</td>
+          <td>{{ item.id }}</td>
+        </tr>
+        <ColorPicker :id="item.id"></ColorPicker>
+      </table>
+    </div>
   </sweet-modal>
 </template>
 
 <script>
 import { SweetModal } from 'sweet-modal-vue';
+import ColorPicker from './ColorPicker.vue';
 
 export default {
-  components: { SweetModal },
+  components: { SweetModal, ColorPicker },
   props: ['todoId'],
   computed: {
     item() {
-      const requestedId = this.todoId;
-      return this.$store.getters.getTodoById(requestedId);
+      return this.$store.getters.getTodoById(this.todoId);
     },
   },
   methods: {
@@ -37,4 +49,13 @@ export default {
 </script>
 
 <style scoped>
+table >>> td {
+  padding: 5px;
+  text-align: left;
+}
+
+table tr >>> td:first-child {
+  text-align: right;
+  font-weight: bold;
+}
 </style>

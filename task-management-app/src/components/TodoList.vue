@@ -13,7 +13,7 @@
         :should-accept-drop="() => true"
         :get-child-payload="getChildPayload">
       <Draggable v-for="item in items" :key="item.id">
-        <div class="todo-item" @click="selectItem(item.id)">
+        <div class="todo-item" @click="selectItem(item.id)" :style="{color: item.color}">
             {{item.name}} <a @click.stop="deleteItem(item.id)" class="delete-todo-link">[Delete]</a>
         </div>
       </Draggable>

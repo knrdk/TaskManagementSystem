@@ -8,6 +8,7 @@ function CreateTodoItem(name) {
   return {
     name,
     id: Uuid(),
+    color: '',
   };
 }
 
@@ -37,6 +38,10 @@ export default new Vuex.Store({
       const todos = this.getters.getTodosForList(listId);
       const element = todos.find(x => x.id === todoId);
       todos.splice(element, 1);
+    },
+    changeTodoColor(state, { todoId, newColor }) {
+      const todo = this.getters.getTodoById(todoId);
+      todo.color = newColor;
     },
   },
   getters: {
