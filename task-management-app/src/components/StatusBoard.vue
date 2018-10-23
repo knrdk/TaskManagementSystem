@@ -1,6 +1,6 @@
 <template>
 <div class="status-board">
-  <div><h2>Lista tasków</h2></div>
+  <div><h2>Tasks board</h2></div>
   <TodoList v-for="(list, index) in lists" :key="index" :name="list.name" :id="list.id" />
   <div class="new-list">
     <input v-model="newItem"/>

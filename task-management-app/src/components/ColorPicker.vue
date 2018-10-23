@@ -2,14 +2,14 @@
   <tr>
       <td>Color</td>
       <td>
-        <span
-        v-for="(availableColor, index) in availableColors"
+        <div class="color-item"
+        v-for="(item, index) in availableColors"
         :key="index"
-        @click="select(availableColor)"
-        :class="{selected: availableColor === color}"
-        :style="{color: availableColor}">
-          {{ availableColor }}
-        </span>
+        @click="select(item)"
+        :class="{selected: item === color}"
+        :style="{background: item.backgroundColor, color: item.fontColor }">
+          {{ item.name }}
+        </div>
       </td>
   </tr>
 </template>
@@ -19,7 +19,7 @@ export default {
   props: ['id'],
   data() {
     return {
-      availableColors: ['orange', 'green', 'blue'],
+      availableColors: this.$store.state.availableColors,
     };
   },
   computed: {
@@ -43,5 +43,12 @@ export default {
 <style scoped>
 .selected {
     font-weight: bold;
+    text-decoration: underline;
+}
+.color-item {
+  border-radius: 3px;
+  display: inline;
+  margin: 0px 5px;
+  padding: 5px;
 }
 </style>

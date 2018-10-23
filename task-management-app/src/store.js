@@ -4,11 +4,18 @@ import Uuid from 'uuid/v4';
 
 Vue.use(Vuex);
 
+const defaultColor = {
+  name: 'Default',
+  backgroundColor: '#d5e1df',
+  fontColor: '#3e4444',
+  deleteColor: '#d64161',
+};
+
 function CreateTodoItem(name) {
   return {
     name,
     id: Uuid(),
-    color: '',
+    color: defaultColor,
   };
 }
 
@@ -20,9 +27,40 @@ function CreateList(name) {
   };
 }
 
+function GetColors() {
+  return [
+    defaultColor,
+    {
+      name: 'Cherry',
+      backgroundColor: '#eca1a6',
+      fontColor: '#563f46',
+      deleteColor: '#d64161',
+    },
+    {
+      name: 'Banana',
+      backgroundColor: '#f2e394',
+      fontColor: '#d96459',
+      deleteColor: '#d64161',
+    },
+    {
+      name: 'Pear',
+      backgroundColor: '#588c7e',
+      fontColor: '#96ceb4',
+      deleteColor: '#d64161',
+    },
+    {
+      name: 'Sky',
+      backgroundColor: '#87bdd8',
+      fontColor: '#667292',
+      deleteColor: '#d64161',
+    },
+  ];
+}
+
 export default new Vuex.Store({
   state: {
     lists: [CreateList('ToDo'), CreateList('In Progress'), CreateList('Done')],
+    availableColors: GetColors(),
   },
   mutations: {
     addNewList(state, name) {

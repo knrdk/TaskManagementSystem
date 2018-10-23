@@ -13,8 +13,14 @@
         :should-accept-drop="() => true"
         :get-child-payload="getChildPayload">
       <Draggable v-for="item in items" :key="item.id">
-        <div class="todo-item" @click="selectItem(item.id)" :style="{color: item.color}">
-            {{item.name}} <a @click.stop="deleteItem(item.id)" class="delete-todo-link">[Delete]</a>
+        <div
+          class="todo-item"
+          @click="selectItem(item.id)"
+          :style="{background: item.color.backgroundColor, color: item.color.fontColor }">
+            {{item.name}}
+            <a @click.stop="deleteItem(item.id)"
+            :style="{color: item.color.deleteColor}"
+            class="delete-todo-link">[Delete]</a>
         </div>
       </Draggable>
       </Container>
@@ -83,12 +89,9 @@ export default {
     float: left;
     margin: 10px;
 }
-.delete-todo-link {
-  color: red;
-}
+
 .todo-item {
-  border-style: solid;
-  border-width: 1px;
+  border-radius: 5px;
   margin: 5px;
   padding: 5px;
 }
