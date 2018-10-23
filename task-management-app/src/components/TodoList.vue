@@ -16,10 +16,10 @@
         <div
           class="todo-item"
           @click="selectItem(item.id)"
-          :style="{background: item.color.backgroundColor, color: item.color.fontColor }">
+          :style="getTodoColorStyle(item.color)">
             {{item.name}}
             <a @click.stop="deleteItem(item.id)"
-            :style="{color: item.color.deleteColor}"
+            :style="getTodoDeleteColorStyle(item.color)"
             class="delete-todo-link">[Delete]</a>
         </div>
       </Draggable>
@@ -30,8 +30,10 @@
 
 <script>
 import { Container, Draggable } from 'vue-smooth-dnd';
+import todoColorMixin from '../mixins/todoColorMixin';
 
 export default {
+  mixins: [todoColorMixin],
   components: { Container, Draggable },
   props: ['id', 'name'],
   data() {

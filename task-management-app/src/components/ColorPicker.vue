@@ -7,7 +7,7 @@
         :key="index"
         @click="select(item)"
         :class="{selected: item === color}"
-        :style="{background: item.backgroundColor, color: item.fontColor }">
+        :style="getTodoColorStyle(item)">
           {{ item.name }}
         </div>
       </td>
@@ -15,7 +15,10 @@
 </template>
 
 <script>
+import todoColorMixin from '../mixins/todoColorMixin';
+
 export default {
+  mixins: [todoColorMixin],
   props: ['id'],
   data() {
     return {
