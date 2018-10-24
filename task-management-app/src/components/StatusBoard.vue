@@ -33,6 +33,9 @@ export default{
       this.newItem = newListDefaultName;
     },
   },
+  created() {
+    this.$store.dispatch('loadList');
+  },
 };
 </script>
 

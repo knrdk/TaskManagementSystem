@@ -77,7 +77,8 @@ export default {
       // TODO indirect store modification
       const { removedIndex, addedIndex, payload } = dropResult;
 
-      const itemToAdd = removedIndex !== null ? source.splice(removedIndex, 1)[0] : payload;
+      const itemToAdd =
+        removedIndex !== null ? source.splice(removedIndex, 1)[0] : payload;
       if (addedIndex !== null) {
         source.splice(addedIndex, 0, itemToAdd);
       }
@@ -88,8 +89,8 @@ export default {
 
 <style scoped>
 .todo-list {
-    float: left;
-    margin: 10px;
+  float: left;
+  margin: 10px;
 }
 
 .todo-item {

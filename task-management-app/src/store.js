@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import Uuid from 'uuid/v4';
+import axios from 'axios';
 
 Vue.use(Vuex);
 
@@ -23,8 +24,28 @@ function CreateList(name) {
   return {
     id: Uuid(),
     name,
-    todos: [CreateTodoItem('First item'), CreateTodoItem('Second item'), CreateTodoItem('Third item')],
+    todos: [],
   };
+}
+
+function ConvertItemDto(item) {
+  return {
+    name: item.name,
+    id: item.id,
+    color: defaultColor,
+  };
+}
+
+function ConverListDto(list) {
+  return {
+    id: list.id,
+    name: list.name,
+    todos: list.todos.map(ConvertItemDto),
+  };
+}
+
+function ConvertApiDtoToLocalModel(lists) {
+  return lists.map(ConverListDto);
 }
 
 function GetColors() {
@@ -56,13 +77,16 @@ function GetColors() {
     },
   ];
 }
-
+let wasListLoaded = false;
 export default new Vuex.Store({
   state: {
-    lists: [CreateList('ToDo'), CreateList('In Progress'), CreateList('Done')],
+    lists: [], // [CreateList('ToDo'), CreateList('In Progress'), CreateList('Done')],
     availableColors: GetColors(),
   },
   mutations: {
+    setLists(state, lists) {
+      state.lists.push(...ConvertApiDtoToLocalModel(lists));
+    },
     addNewList(state, name) {
       state.lists.push(CreateList(name));
     },
@@ -80,6 +104,19 @@ export default new Vuex.Store({
     changeTodoColor(state, { todoId, newColor }) {
       const todo = this.getters.getTodoById(todoId);
       todo.color = newColor;
+    },
+  },
+  actions: {
+    loadList({ commit }) {
+      if (wasListLoaded) {
+        return;
+      }
+      axios.get('/api/TodoList')
+        .then((result) => {
+          wasListLoaded = true;
+          commit('setLists', result.data);
+        })
+        .catch(console.error);
     },
   },
   getters: {
