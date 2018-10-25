@@ -3,6 +3,7 @@ import Vuex from 'vuex';
 import Uuid from 'uuid/v4';
 import axios from 'axios';
 import { defaultColor, allColors } from './constants/availableColors';
+import ConvertApiDtoToLocalModel from './mappers/TodoListMapper';
 
 Vue.use(Vuex);
 
@@ -20,26 +21,6 @@ function CreateList(name) {
     name,
     todos: [],
   };
-}
-
-function ConvertItemDto(item) {
-  return {
-    name: item.name,
-    id: item.id,
-    color: defaultColor,
-  };
-}
-
-function ConverListDto(list) {
-  return {
-    id: list.id,
-    name: list.name,
-    todos: list.todos.map(ConvertItemDto),
-  };
-}
-
-function ConvertApiDtoToLocalModel(lists) {
-  return lists.map(ConverListDto);
 }
 
 let wasListLoaded = false;
