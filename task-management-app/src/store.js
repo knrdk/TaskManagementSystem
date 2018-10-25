@@ -2,15 +2,9 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import Uuid from 'uuid/v4';
 import axios from 'axios';
+import { defaultColor, allColors } from './constants/availableColors';
 
 Vue.use(Vuex);
-
-const defaultColor = {
-  name: 'Default',
-  backgroundColor: '#d5e1df',
-  fontColor: '#3e4444',
-  deleteColor: '#d64161',
-};
 
 function CreateTodoItem(name) {
   return {
@@ -48,40 +42,11 @@ function ConvertApiDtoToLocalModel(lists) {
   return lists.map(ConverListDto);
 }
 
-function GetColors() {
-  return [
-    defaultColor,
-    {
-      name: 'Cherry',
-      backgroundColor: '#eca1a6',
-      fontColor: '#563f46',
-      deleteColor: '#d64161',
-    },
-    {
-      name: 'Banana',
-      backgroundColor: '#f2e394',
-      fontColor: '#d96459',
-      deleteColor: '#d64161',
-    },
-    {
-      name: 'Pear',
-      backgroundColor: '#588c7e',
-      fontColor: '#96ceb4',
-      deleteColor: '#d64161',
-    },
-    {
-      name: 'Sky',
-      backgroundColor: '#87bdd8',
-      fontColor: '#667292',
-      deleteColor: '#d64161',
-    },
-  ];
-}
 let wasListLoaded = false;
 export default new Vuex.Store({
   state: {
-    lists: [], // [CreateList('ToDo'), CreateList('In Progress'), CreateList('Done')],
-    availableColors: GetColors(),
+    lists: [],
+    availableColors: allColors,
   },
   mutations: {
     setLists(state, lists) {
