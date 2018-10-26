@@ -7,12 +7,12 @@ services:
   api:
     build: ./task-management-api
     expose:
-      - "80" 
+      - "80"
   proxy:
     build: ./task-management-proxy
     ports:
       - "80:80"
-    links: #this is legacy option
+    depends_on:
       - app
       - api
       
