@@ -1,0 +1,18 @@
+version: '3'
+services:
+  app:
+    build: ./task-management-app
+    expose:
+     - "8080"
+  api:
+    build: ./task-management-api
+    expose:
+      - "80" 
+  proxy:
+    build: ./task-management-proxy
+    ports:
+      - "80:80"
+    links: #this is legacy option
+      - app
+      - api
+      
