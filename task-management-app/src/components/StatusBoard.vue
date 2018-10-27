@@ -13,6 +13,7 @@
 <script>
 import TodoList from './TodoList.vue';
 import { ADD_NEW_LIST } from '../constants/mutations';
+import { LOAD_LIST } from '../constants/actions';
 
 const newListDefaultName = 'New list';
 
@@ -35,7 +36,7 @@ export default{
     },
   },
   created() {
-    this.$store.dispatch('loadList');
+    this.$store.dispatch(LOAD_LIST);
   },
 };
 </script>

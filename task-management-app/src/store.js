@@ -4,7 +4,8 @@ import Uuid from 'uuid/v4';
 import axios from 'axios';
 import { defaultColor, allColors } from './constants/availableColors';
 import ConvertApiDtoToLocalModel from './mappers/TodoListMapper';
-import * as Constants from './constants/mutations';
+import * as Mutations from './constants/mutations';
+import * as Actions from './constants/actions';
 
 Vue.use(Vuex);
 
@@ -31,37 +32,37 @@ export default new Vuex.Store({
     availableColors: allColors,
   },
   mutations: {
-    [Constants.SET_LISTS](state, lists) {
+    [Mutations.SET_LISTS](state, lists) {
       state.lists.push(...ConvertApiDtoToLocalModel(lists));
     },
-    [Constants.ADD_NEW_LIST](state, name) {
+    [Mutations.ADD_NEW_LIST](state, name) {
       state.lists.push(CreateList(name));
     },
-    [Constants.ADD_TODO](state, { listId, todoName }) {
+    [Mutations.ADD_TODO](state, { listId, todoName }) {
       console.log(todoName);
       const list = this.getters.getListById(listId);
       const item = CreateTodoItem(todoName);
       list.todos.push(item);
     },
-    [Constants.DELETE_TODO](state, { listId, todoId }) {
+    [Mutations.DELETE_TODO](state, { listId, todoId }) {
       const todos = this.getters.getTodosForList(listId);
       const element = todos.find(x => x.id === todoId);
       todos.splice(element, 1);
     },
-    [Constants.CHANGE_TODO_COLOR](state, { todoId, newColor }) {
+    [Mutations.CHANGE_TODO_COLOR](state, { todoId, newColor }) {
       const todo = this.getters.getTodoById(todoId);
       todo.color = newColor;
     },
   },
   actions: {
-    loadList({ commit }) {
+    [Actions.LOAD_LIST]({ commit }) {
       if (wasListLoaded) {
         return;
       }
       axios.get('/api/TodoList')
         .then((result) => {
           wasListLoaded = true;
-          commit(Constants.SET_LISTS, result.data);
+          commit(Mutations.SET_LISTS, result.data);
         })
         .catch(console.error);
     },
