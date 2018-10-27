@@ -12,6 +12,7 @@
 
 <script>
 import TodoList from './TodoList.vue';
+import { ADD_NEW_LIST } from '../constants/mutations';
 
 const newListDefaultName = 'New list';
 
@@ -29,7 +30,7 @@ export default{
   },
   methods: {
     addItem() {
-      this.$store.commit('addNewList', this.newItem);
+      this.$store.commit(ADD_NEW_LIST, this.newItem);
       this.newItem = newListDefaultName;
     },
   },

@@ -16,6 +16,7 @@
 
 <script>
 import todoColorMixin from '../mixins/todoColorMixin';
+import { CHANGE_TODO_COLOR } from '../constants/mutations';
 
 export default {
   mixins: [todoColorMixin],
@@ -37,7 +38,7 @@ export default {
         todoId: this.id,
         newColor: colorToSelect,
       };
-      this.$store.commit('changeTodoColor', request);
+      this.$store.commit(CHANGE_TODO_COLOR, request);
     },
   },
 };

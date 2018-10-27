@@ -31,6 +31,7 @@
 <script>
 import { Container, Draggable } from 'vue-smooth-dnd';
 import todoColorMixin from '../mixins/todoColorMixin';
+import { ADD_TODO, DELETE_TODO } from '../constants/mutations';
 
 export default {
   mixins: [todoColorMixin],
@@ -52,14 +53,14 @@ export default {
         listId: this.id,
         todoId,
       };
-      this.$store.commit('deleteTodo', params);
+      this.$store.commit(DELETE_TODO, params);
     },
     addItem() {
       const params = {
         listId: this.id,
         todoName: this.newItem,
       };
-      this.$store.commit('addTodo', params);
+      this.$store.commit(ADD_TODO, params);
       this.newItem = '';
     },
     selectItem(todoId) {

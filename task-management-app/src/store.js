@@ -4,6 +4,7 @@ import Uuid from 'uuid/v4';
 import axios from 'axios';
 import { defaultColor, allColors } from './constants/availableColors';
 import ConvertApiDtoToLocalModel from './mappers/TodoListMapper';
+import * as Constants from './constants/mutations';
 
 Vue.use(Vuex);
 
@@ -30,24 +31,24 @@ export default new Vuex.Store({
     availableColors: allColors,
   },
   mutations: {
-    setLists(state, lists) {
+    [Constants.SET_LISTS](state, lists) {
       state.lists.push(...ConvertApiDtoToLocalModel(lists));
     },
-    addNewList(state, name) {
+    [Constants.ADD_NEW_LIST](state, name) {
       state.lists.push(CreateList(name));
     },
-    addTodo(state, { listId, todoName }) {
+    [Constants.ADD_TODO](state, { listId, todoName }) {
       console.log(todoName);
       const list = this.getters.getListById(listId);
       const item = CreateTodoItem(todoName);
       list.todos.push(item);
     },
-    deleteTodo(state, { listId, todoId }) {
+    [Constants.DELETE_TODO](state, { listId, todoId }) {
       const todos = this.getters.getTodosForList(listId);
       const element = todos.find(x => x.id === todoId);
       todos.splice(element, 1);
     },
-    changeTodoColor(state, { todoId, newColor }) {
+    [Constants.CHANGE_TODO_COLOR](state, { todoId, newColor }) {
       const todo = this.getters.getTodoById(todoId);
       todo.color = newColor;
     },
@@ -60,7 +61,7 @@ export default new Vuex.Store({
       axios.get('/api/TodoList')
         .then((result) => {
           wasListLoaded = true;
-          commit('setLists', result.data);
+          commit(Constants.SET_LISTS, result.data);
         })
         .catch(console.error);
     },
