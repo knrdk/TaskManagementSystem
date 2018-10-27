@@ -1,12 +1,32 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/statusBoard">Board</router-link>
+    <div v-if="isAuthenticated">
+      <div  id="nav">
+        <router-link to="/">Home</router-link> |
+        <router-link to="/statusBoard">Board</router-link>
+      </div>
+      <router-view/>
     </div>
-    <router-view/>
+    <LoginPage v-if="!isAuthenticated" />
   </div>
 </template>
+
+<script>
+import LoginPage from './components/LoginPage.vue';
+import { LOAD_TOKEN_FROM_LOCAL_STORAGE } from './constants/actions';
+
+export default {
+  components: { LoginPage },
+  computed: {
+    isAuthenticated() {
+      return this.$store.state.authentication.isAuthenticated;
+    },
+  },
+  created() {
+    this.$store.dispatch(LOAD_TOKEN_FROM_LOCAL_STORAGE);
+  },
+};
+</script>
 
 <style>
 #app {
