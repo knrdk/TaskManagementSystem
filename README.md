@@ -2,7 +2,7 @@
 
 ### Demo
 
-https://kktaskapigatewaylogs.z16.web.core.windows.net/
+http://kktask.northeurope.cloudapp.azure.com/
 
 ### Start
 ```
