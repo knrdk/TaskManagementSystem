@@ -2,7 +2,7 @@
 
 ### Demo
 
-http://kktask.northeurope.cloudapp.azure.com/
+http://kktask.northeurope.cloudapp.azure.com/ (username/password: admin/1234)
 
 ### Start
 ```
