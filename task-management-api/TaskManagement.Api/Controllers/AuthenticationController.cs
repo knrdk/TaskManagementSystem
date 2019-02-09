@@ -1,15 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
-using TaskManagement.Api.Dto;
 using TaskManagement.Api.Dto.Authentication;
+using TaskManagement.Api.Infrastructure.Authentication;
 
 namespace TaskManagement.Api.Controllers
 {
@@ -18,8 +10,16 @@ namespace TaskManagement.Api.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
+        private readonly IAuthenticationService _authenticationService;
+
+        public AuthenticationController(IAuthenticationService authenticationService)
+        {
+            _authenticationService = authenticationService;
+        }
+
         [HttpGet]
-        public IActionResult Get(){
+        public IActionResult Get()
+        {
             return NoContent();
         }
 
@@ -32,27 +32,7 @@ namespace TaskManagement.Api.Controllers
                 return Unauthorized();
             }
 
-            return CreateToken(request);
-        }
-
-        private string CreateToken(UserLoginRequestDto userInfo)
-        {
-            var tokenHandler = new JwtSecurityTokenHandler();
-
-            byte[] key = Encoding.ASCII.GetBytes("verySecretKey123456789!@#$%^&*(");
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
-                {
-                    new Claim(ClaimTypes.Name, userInfo.UserName)
-                }),
-                Expires = DateTime.UtcNow.AddHours(24),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-
-            SecurityToken token = tokenHandler.CreateToken(tokenDescriptor);
-            string result = tokenHandler.WriteToken(token);
-            return result;
+            return _authenticationService.GetToken(request.UserName, request.Password);
         }
     }
 }
