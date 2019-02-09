@@ -18,9 +18,9 @@ namespace TaskManagement.Api.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
-        {
-            return NoContent();
+        public ActionResult<string> Get()
+        {            
+            return User.Identity.Name;
         }
 
         [AllowAnonymous]
